@@ -233,4 +233,110 @@ Next :
 		Create Github 		--> 
 		AWS Account 	  	--> 	Free Tier Account
 		
+		
 
+########################
+Day - 2 - 25th June 2023
+########################
+
+		Kubernetes Concepts 
+		Installation and Configuration of Kubernetes
+		
+
+	Kubernetes Concepts :::
+	
+	
+		kubectl
+		pods
+		Kubernetes Objects 
+		Services 
+		Volumes 
+		HELM
+		Troubleshooting 
+		Security 
+		
+	
+	Installation and Configuration of Kubernetes :::
+	
+	For Learning Purpose :
+		- https://labs.play-with-docker.com/
+		- https://labs.play-with-k8s.com/
+		
+		- Minikube ==> Learning purpose 
+	
+	Open-Source Kubernetes(Self-Managed Service)	
+	
+	Managed Services 	- Cloud Service Providers(AWS/AZ/GCP/DO)
+	
+	On-Premises ::::
+	
+		Create Virtual Machines ::::	
+		
+		Hypervisor 
+		
+		1. Oracle VirtualBox --> 
+		2. Create VMs - 3 (1 + 2)
+		3. Use Kubeadm 
+		
+	Open-Source Kubernetes(Self-Managed Service)	 --> Installation & Configuration :
+			https://kubernetes.io/docs/setup/
+	
+		kubeadm ==> Used to Install and Config. Kubernetes
+		kubectl ==> Used to work on Kubernetes
+
+		Kubernetes_Master		(VM) (Active)
+				Kubernetes_WorkerNode1		Pkg1
+				Kubernetes_WorkerNode2		Pkg1
+				
+		
+		
+	VMs ===> Access this VM using using external SSH Client - putty/moboxterm/terminal - Keypair.
+			 https://mobaxterm.mobatek.net/download.html
+			 
+			 
+	Kubectl ::::
+
+	Pods :::::
+	
+	Namespace :::::
+	
+	
+	
+	kubectl get nodes
+	Namespaces are logical partition of cluster  - -default namespace
+	kube-system
+	
+	
+
+
+		Non-PROD					PROD 
+		
+		DEV						
+		QA 			Testing 
+		UAT 						Prod (VMs)
+		Prod
+		
+
+		Kubernetes_Master
+			cluster1
+				Kubernetes_WorkerNode1		
+				Kubernetes_WorkerNode2	
+				
+	Namespace === are logical partition of cluster  - default namespace
+	
+	kubectl create namespace QA
+	
+	kubectl create namespace QA
+	Non-Prod ::
+		Kubernetes_Master							
+			cluster1						App_Team1,2,3,4
+				Kubernetes_WorkerNode1		
+				Kubernetes_WorkerNode2
+				Kubernetes_WorkerNode3		
+				Kubernetes_WorkerNode4
+				Kubernetes_WorkerNode5		
+				Kubernetes_WorkerNode6
+				
+	kubectl create namespace App_Team1
+
+	 
