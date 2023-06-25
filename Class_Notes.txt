@@ -1,0 +1,236 @@
+#######################
+#CKA - 24th June 2023
+#######################
+
+
+Day - 1
+
+	Introduction to VM/Containers/Kubernetes
+	
+	Lab Access :::
+	
+	AWS Free Tier Account to Practise Kubernetes
+	
+	
+	Kubernetes is Container Orchestration Tool ::::
+	
+	Deployment :::
+	
+		- Install & run application
+		- Deploy to qa/ and further testing 
+		
+	Testing ::::
+	
+	
+	Development of Application ::::
+	
+	
+	How the application is developed ? 
+	What are the process/approaches involved ??
+	
+	- business needs -->
+	
+	
+		Monolith Application Architecture
+		
+			Core Banking Application developed in legacy environments
+			
+			Continuous Delivey / Deployment
+		
+		Micro-Service Based Application Architecture
+		
+		E_Commerce 
+		Online_Banking System == Web based. 
+			Customer Registration				==> Code, Tested , Deployed to Prod.	==> *.war/*.jar - Deploy this as a service. - Containers 
+			Customer Login						==> Code, Tested , Deployed to Prod.
+			Customer Transaction Module			==> Code, Tested , Deployed to Prod.
+		
+	Container Orchestration Tool	
+	
+		Kubernetes is the Open Source Container Orchestration Tools 
+		
+		Docker Swarm -- Container Orchestration Tool
+		
+		AWS 		EKS
+		AZURE 		AKS
+		GCP 		GKS
+		
+		
+	Container ????
+	
+	
+		Application Build ???
+		Dev Environment ::
+		
+			--> Build --> Is a process of compile the source code and create artifacts(Binaries - *.war/*.jar/*.exec/*.dll)
+			
+				cust_regis.war_SNAPSHOT_v1.0		- working as expected in UT.	--> Maven/		tomcat8.0/jdk1.8
+				Unit Testing
+			
+			
+		Non - Prod Environment																	Prod Environment
+
+		Dev
+			
+		Test 
+			QA				cust_regis.war_SNAPSHOT_v1.0	tomcat9.0/jdk1.6
+			UAT 			cust_regis.war_SNAPSHOT_v1.0	tomcat8.5.0/openjdk17
+		Pre-Prod/Staging							------>										Prod	cust_regis.war_SNAPSHOT_v1.0	tomcat8.5.0/openjdk17						
+	
+	
+		Deployment :::		Process of copying the artifacts to Higher environments
+		
+		
+		Dev ::: 
+				cust_regis.war_SNAPSHOT_v1.0
+				
+				Package the application along with the depencies ::: (cust_regis.war_SNAPSHOT_v1.0 + tomcat8.0/jdk1.8)		-->	 Pkg1
+				
+				Application Image 	-->		Static file (cust_regis.war_SNAPSHOT_v1.0 + tomcat8.0/jdk1.8)
+				Containers			-->		Executable of Images -- > 	 
+				
+	
+		Targets ::::
+			QA 			--> Pkg1
+			UAT			--> pkg1
+			Prod		--> pkg1
+			
+			
+		Containers are Lightweight 	--> It is used to run application.
+						
+		Virtual Machine 			--> Computing Device ==> running in remote environments		
+		
+		Virutal Machines are used to run OS -> run the applications
+		VM will be up and running and consumes the resource even if there is no application are running.
+		
+		
+		Containers are used to reduce the no. of VMs.
+		
+		VMS are considered as Hardware Level Virtualization 
+		Container are considered as OS Level Virtualization --> inherit the properties of base OS 
+			Namespaces - CGroups
+			
+			
+		Container Engine :::: meant Linux OS 
+		
+		Docker Desktop for Windows / Linux / Mac 
+		
+		Container Registry ==> download the base Img - ubuntu1.0 ==> ubuntu2.0
+		
+	
+		Container Orchestration ::::
+		
+		
+		Micro-Service Based Application Architecture
+		
+		E_Commerce 
+		Online_Banking System == Web based. 
+			Customer Registration				==> Code, Tested , Deployed to Prod.	==> *.war/*.jar - Deploy this as a service. - Containers 
+			Customer Login						==> Code, Tested , Deployed to Prod.
+			Customer Transaction Module			==> Code, Tested , Deployed to Prod.	
+		
+		3-tier architecture ::=---> Frontend, Application_Logic,Backend(DataBase)
+		
+		Customer Registration				==> Code, Tested , Deployed to Prod.	==> *.war/*.jar - 
+		
+											Deploy this as a service. - Containers
+											Frontend - c1		
+											Application_Logic - c2 ----> 
+											Backend(DataBase) - c3
+											
+											
+		Tools -- to monitor and ensure high availability of the application containers 
+		Container Orchestration :::
+		
+		- Kubernetes Architecture
+		- Kubernetes Concepts 
+		- Volumes 
+		- Services 
+		- Networking 
+	
+	- Kubernetes Architecture :::
+	
+			Master / Worker Nodes 
+			
+			
+		Kubernetes_Master		(VM)
+			Kubernetes_Cluster
+				Kubernetes_WorkerNode1		Pkg1
+				Kubernetes_WorkerNode2		Pkg1
+				Kubernetes_WorkerNode3		Pkg1
+		
+		
+		Container Images are stored and Managed in Container Registry
+		
+		Docker ---> DockerHub 
+		
+		AWS --> ECS --> ECR --> EKS
+		AZ 	--> ACS --> ACR --> AKS
+		
+		
+		pod --> is a atomic unit of sheduling --> 
+		
+
+	Kubernetes_Master		(VM) (Passive)
+		Kubernetes_Master		(VM) (Active)
+		
+			Kubernetes_Cluster (Active)
+				Kubernetes_WorkerNode1		Pkg1
+				Kubernetes_WorkerNode2		Pkg1
+				Kubernetes_WorkerNode3		Pkg1
+				
+			Kubernetes_Cluster (Passive)
+				Kubernetes_WorkerNode1		Pkg1
+				Kubernetes_WorkerNode2		Pkg1
+				Kubernetes_WorkerNode3		Pkg1
+				
+			Kubernetes_Master	
+					Kubernetes_Master1		(VM) (Active)
+					
+						Kubernetes_Cluster (Active)
+							Kubernetes_WorkerNode1		Pkg1
+							Kubernetes_WorkerNode2		Pkg1
+							Kubernetes_WorkerNode3		Pkg1
+							
+						Kubernetes_Cluster (Passive)
+							Kubernetes_WorkerNode1		Pkg1
+							Kubernetes_WorkerNode2		Pkg1
+							Kubernetes_WorkerNode3		Pkg1
+							
+
+					Kubernetes_Master2		(VM) (Active)
+					
+						Kubernetes_Cluster (Active)
+							Kubernetes_WorkerNode1		Pkg1
+							Kubernetes_WorkerNode2		Pkg1
+							Kubernetes_WorkerNode3		Pkg1
+							
+						Kubernetes_Cluster (Passive)
+							Kubernetes_WorkerNode1		Pkg1
+							Kubernetes_WorkerNode2		Pkg1
+							Kubernetes_WorkerNode3		Pkg1
+							
+							
+		Kubernetes Terminologies ::::
+		
+			Nodes			-- Master(Control Plane), Cluster(WorkerNodes1,2,3,4,5,.....)
+			Images 			-- Is a static file composed of Application and its dependencies
+			Containers		-- Instance of Image -- Executable unit of Image
+			Pods 			-- Smallest/Atomic unit of Scheduling - Can have one or more containers -- one to one mapping as a best practise.
+			Volumes			-- persistant volumes
+			Services
+			
+		
+		Computing Device :::			Docker ::::					Kubernetes ::::
+		
+		
+		Virtual Machines				Container  					Pod (1 + 1)
+										Docker Compose				Volumes are allocated at pod level
+										Volumes are allocated
+										
+Next :
+										
+		Create Github 		--> 
+		AWS Account 	  	--> 	Free Tier Account
+		
+
