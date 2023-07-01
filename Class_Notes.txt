@@ -339,4 +339,121 @@ Day - 2 - 25th June 2023
 				
 	kubectl create namespace App_Team1
 
+
+########################
+Day - 3 - 1st July 2023
+########################
+	
+		Concepts of Kubernetes ::::		
+		
+		Kubectl :::			
+		
+		Pods :::
+		
+		Controller Objects :::
+			Replicasets 
+			Replication Controllers 
+			DaemonSets 
+			Deployments 
+		Volumes :::
+			EmptyDir 
+			Hostpath
+			Config_Maps
+			Secrets
+			
+		The kubernetes objects can be created using kubectl adhoc commands / using Manifest file.
+		
+		Manifest file ---> *.yaml file
+		
+		Container Registry ==> 
+		
+			Organization 			==> Add Users to this Org.
+				Repositories 
+					Create Images 
+		
+		Create Pod ::::
+		
+		
+		docker exec ===> login to running containers 
+		
+		kubectl exec ==> login to runnig containers 
+		
+		
+		Create an simple Nginx Pod Images
+
+		Login to the running pod 
+		
+		create some file - html file 
+		
+		save the changes 
+		
+		Access the pod using web browser .
+		
+		Docker -- port Mapping / Binding 
+		
+		
+		NodePort - is a service used to expose the pod to internet.
+		
+		Services :::
+		
+			ClusterIP
+			NodePort 
+			LoadBalancer		--> IP - DNS -->  
+			
+			
+		Pod ==> 
+		
+		
+		docker run -it -p 8087:80 nginx
+		
+		
+		Master 
+		
+			Worknodes 
+			
+			
+		
+		
+		
+		VM ===> nginx appln ==> localhost:80
+		
+		VM --> Docker_Container ==> nginx appln ==> Public_Ip:8087 ===> to achieve -p 8087:80
+		
+		VM --> Pod (Docker_Container ==> nginx appln) ==> Public_Ip:31000 ===> to achieve -- NodePort Service - 80:31000
+		
+		
+		How to create manifest for Pod definition
+		
+		How to expose a pod to internet
+		
+		
+		2 WN 
+		
+		Create the replicas of pods and deploy it in all the nodes.
+		
+		Controller Manager ===> It is always used to run the pods in its desired state.
+		
+		my desired state is -- I want to run 3 instance(replicas) of pod at any point of time.
+		
+		Controller Objects :::
+			Replicasets 
+			***Replication Controllers 
+			DaemonSets 
+			Deployments 		
+		
+		
+		Replicasets  (vs) Replication Controllers 
+		
+		Both are used to run a specific no. of pods at any point of time.
+		
+		RC ==> uses Equality Based Operator to refer the label
+		RS ==> uses Set Based Operator to refer the labels
+		
+		
+		Deploy a pod in Dev & QA env. 
+		
+		envi = dev 
+		envi = qa 
+		
+		envi in (dev,QA)
 	 
