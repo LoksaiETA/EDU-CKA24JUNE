@@ -457,3 +457,183 @@ Day - 3 - 1st July 2023
 		
 		envi in (dev,QA)
 	 
+	
+
+########################
+Day - 4 - 2nd July 2023
+########################
+
+
+		Replication Controller 
+		
+		Replicasets 
+		
+		deployment ==> Process of releasing the new version of appln.
+		
+		Continuous Development/Integration in DevOps ===> 
+		
+		src code repo. (github/bitbucket/azRepo/)		==> source-code(*.java)
+
+		artifactory Libraries/Repositories (Jfrog Artifatory) --> maintains artifacts(binaries-*.war,*.jar,*.dll,*.exec)
+		
+		Container Registry/Repositories (Dockerhub)
+		
+		*.war_v1.0 ==> deployed 
+		*.war_v1.1 ==> deployed
+		*.war_v1.2 ==> deployed
+		
+		bankingapp:9.0
+		bankingapp:latest
+		
+		
+		Deployment ==> controller Objects in Kubernetes written using will be used.
+		
+		This Monitors the Pods and it helps the pods to always run in its desired state.
+		
+		Deployment ==> controller Objects in Kubernetes are used to deploy stateless Applications.
+		
+		Replicasets
+		Scale Up/Down
+		deployment of new versions
+		Undo/Rollback the changes
+		
+		deployment Strategies :::::
+		
+			Rolling Update/deployment Strategy			==> Default deployment strategy in kubernetes
+			Ensure 100% availability.
+			
+		bankingapp:8.0			---> initial version 		--->  5 instance of pod --> 
+		bankingapp:9.0			---> deployed 				--->  			
+
+		bankingapp:latest
+		
+		
+		Stateless Applications		(vs) 	Stateful Applications
+		
+		Statefulset ==> controller Objects in Kubernetes are used to deploy stateful Applications.
+		
+			Microservice :::
+				Welcome_Page		==> Frontend		--> this kind of services doesnt generate any output/ 
+		
+			Microservice :::
+				User_Login_Service ==>	Frontend/Application_Layer/Backend(DataBase) --> the containers has to maintain some data
+				data - logs/reports/file/
+			
+
+			
+		Manifest files::::
+		
+		git remote repos.
+		
+		DevOps_Admin_Org.
+			DevOps_Admin_K8s_Repo
+				Manifest.
+				Visual Studio Code IDEs		--> Install YAML Extension.
+					DevOps_K8s_Project
+						*.yaml
+			DevOps_Ansible_Repo
+		
+		
+			
+	cicd: 
+
+		scm checkout --> 
+		build 
+		craete artifacts 
+		
+		build docker images		
+		publish to container registry
+		
+		deploy to kubernetes 
+		
+		
+		Jenkins --> CICD 			BUILD_NUMBER# 1
+		
+		scm checkout --> 
+		build 
+		craete artifacts 
+		
+		build docker images
+				docker build -t loksaieta/mywebapp:${BUILD_NUMBER} .
+				
+		publish to container registry
+		
+		deploy to kubernetes 
+		
+		
+	Daemonsets :::::: Is a controller Object used to execute a copy of Pod in all the available workernodes.
+	
+	Replicaset ???
+				--> Ensure that a specific no. of pod instance are up and running all the time.  5 --> 5 nodes 
+	
+	
+	
+	
+	Cluster::				
+	
+		WorkerNodes1
+		WorkerNodes2
+		WorkerNodes3
+		WorkerNodes4
+		WorkerNodes5
+		
+	DaemonSets ===> Monitoring tool ---> Execute this as pod
+						- Infra-Structure Monitoring
+						- Application Monitoring
+						
+						
+	Stateless Application --> 
+	Stateful Application  --> This require ==> Container Volume 
+	
+	
+	Container 					<--> 		host Machine 
+	(Container_Volume)			<==>		Host_Volume
+	
+	
+	Kubernetes :::
+	
+		Volumes should be created at the Cluster. NOT at the host level. 
+		
+	Various Types: 
+	
+		emptyDir 
+		hostpath
+		ConfigMaps
+		Secrets
+		Persistant Volume
+		Persistant Volume Claim 
+		Distributed Storage medium/Servers
+		
+			AWS -- EBS / S3 
+			AZ  -- AzDisks
+			GCP -- GStorage
+			On-Premises
+			Hybrid 
+		
+				5TB --> Static/Dynamic 
+
+	Config_Maps / Secrets ::::::
+			
+	Java Application :::
+		Image --> (*.war,tomcat,jdk)	- appimgv1.0
+		
+		Environment Specific configurations are need to deploy the application.
+		
+		
+		Image --> (*.war,tomcat,jdk,qa_config_file)		- qa_appimgv1.0
+		Image --> (*.war,tomcat,jdk,uat_config_file)	- uat_appimgv1.0
+		
+		Image --> (*.war,tomcat,jdk)	- appimgv1.0			+ 	qa_config_file			== Deploy to QA Envi.
+		Image --> (*.war,tomcat,jdk)	- appimgv1.0			+ 	uat_config_file			== Deploy to UAT Envi.
+		
+	Config_Maps / Secrets ::::::
+	
+	Secrets are used to maintain sensitive Data.				Database --> Credential / userId/password/token/keys
+	ConfigMaps are usually used to maintain Non-Sensitive Data.
+	
+	
+
+	Pod level scaling 		 HPA ---> 
+	
+	node level scaling       VPA --->
+	
