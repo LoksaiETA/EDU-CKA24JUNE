@@ -456,7 +456,42 @@ Day - 3 - 1st July 2023
 		envi = qa 
 		
 		envi in (dev,QA)
-	 
+		
+		
+		
+# nginx-rc.yaml  
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: nginx-rc
+spec:
+  replicas: 3
+  template:
+    metadata:
+      name: nginx-pod
+      labels:
+        app: nginx-app
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx
+        ports:
+        - containerPort: 80		
+  template:
+    metadata:
+      name: nginx-pod1
+      labels:
+        app: nginx-app1
+    spec:
+      containers:
+      - name: nginx-container1
+        image: nginx
+        ports:
+        - containerPort: 80
+  selector:
+    app: nginx-app
+    app: nginx-app1
+	
 	
 
 ########################
@@ -632,8 +667,160 @@ Day - 4 - 2nd July 2023
 	ConfigMaps are usually used to maintain Non-Sensitive Data.
 	
 	
+#nginx-pod-configmap-vol.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod-configmap-vol
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx
+    volumeMounts:
+    - name: qa-vol
+      mountPath: "/etc/non-sensitive-data"
+      readOnly: true
+  volumes:
+    - name: qa-vol
+      configMap:
+        name: nginx-configmap-vol
 
-	Pod level scaling 		 HPA ---> 
+########################
+Day - 5 - 8th July 2023
+########################	
+
+		Volumes :::
+		
+			ConfigMaps
+			Secrets
+			hostpath
+			PV 
+				Static
+				Dynamic
+			PVC 
 	
-	node level scaling       VPA --->
 	
+	
+		Application ==> 						100GB of Volume.
+			- Needs some input files
+			- Creates some output files 
+			
+			
+		pod1(/text-mnt) --> /test-vol
+		
+		
+		pod1 -- 3 containers --> /test-vol
+		
+		emptyDir --> is the default volume.
+		
+		
+		Storage Admins
+		Infra-Architects
+		Application Owners
+		
+		
+		Process Workflow for volume Allocation.
+		
+		
+		Developements --> 
+		
+		Prod deployment .
+		
+		Create a request --> Pod/Appln -- along with volumes requirement.
+		Persistant Volume Claim --> Request Form.
+		Persistant Volume --> will be provisioned to pod.
+		
+		
+		Static Provisioning :::
+		
+			PV	-- Storage unit  
+			
+		Dynamic Provision :::
+		
+			PVC -- Persistant Volume Claim
+			
+			
+		Services ::::
+		
+		Nodeport ::: --> Expose the pods to internet!
+		
+		
+		
+		The Properties of PODs
+		
+		pod ip address ==> Not a permanent one.
+		
+		External/Public/Static/Elastic IP Address will be used to access the applications thru internet.
+			
+			
+			pod --> container1	--> Active Container 		80
+					container2	--> Passive Container		80	sidecar conatainer()
+					
+		
+
+########################
+Day - 6 - 9th July 2023
+########################	
+		
+		
+		How to Troubleshoot the issues!
+		Kubernetes Security - RBAC
+			HELM - Package Manager for kubernetes.
+				- Demo - Kubernetes Dashboard & Monitoring 
+		Demo 	- deployments, CICD using Jenkins, PV & PVC 
+				- Using Kubernetes Managed Services
+		
+		Any Questions on Installation & Config of Kubernetes ???
+		
+		NodeSelector --> Used to deploy the pods in the specific node using labels.
+		
+		Troubleshooting :::
+		
+			Kubernetes Objects --> Pods, RS,
+				kubectl describe
+			
+	
+	Kubernetes Master :::
+	
+		**kubernetes master1	(Active)/Passive	1 + 1	
+			Cluster1
+				WN1
+				WN2
+				WN3		
+			Cluster2			(10 copies of pod up n running) 1...10 
+				WN1
+				WN2
+				WN3						
+		**kubernetes master2	(Active)/Passive		
+			Cluster1
+				WN1
+				WN2
+				WN3
+			Cluster2
+				WN1
+				WN2
+				WN3		
+		
+		100 types of applications ==> 
+		
+		3 Appln.
+		
+		Manifest --> 
+		
+		cluster1 :
+		
+			pod1		deployed in dev NS (dev)
+			pod2		deployed in dev NS 
+			pod3
+			pod4 
+			
+		Role --> NS -- (dev) ==> Loksai 
+		
+		Cluster ==> Loksai
+		
+		
+		HELM - Package Manager for kubernetes.
+		
+		
+		
+		
