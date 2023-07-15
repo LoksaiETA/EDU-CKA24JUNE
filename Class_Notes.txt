@@ -823,4 +823,185 @@ Day - 6 - 9th July 2023
 		
 		
 		
+########################
+Day - 7 - 15th July 2023
+########################		
+		
+		HELM - Demo with Kubernetes Dashboard
+		
+				How to manage the Kubernetes Packages 
+				How to use/Create Service Account 
+				How to enable RBAC 
+				How to perform Token Based Authention
+				Converting ClusterIP to NodePort 
+				Create Kubernetes Dashboard
+				
+				
+		Services ==> 	NodePort 
+						LoadBalancer - External Service 
+						
+						Ingress Controller 
+						
+		CI/CD 	 ==> 	Java Web Application - Maven Web Application 
+						Jenkins_Master 
+							Jenkins_Slave 
+						Kubernetes
+						
+	Scenario1:
+	
+		www.mycompany.com/
+			mail
+			maps
+			drive
+	
+		HostName Base Routing :::
+		
+			mail.mycompany.com
+			maps.mycompany.com
+			
+	
+						
+	Scenario2:					
+		mail.mycompany.com ==> DNS 
+			indox
+			sent
+			trash
+		
+		Path based Routing :::
+		
+			mail.mycompany.com/inbox
+			mail.mycompany.com/inbox
+			
+			
+		Load Balancer		==> External IP of LoadBalancer --> applicable for whole application 
+		
+		NodePort Service  	==> Node Port					--> accessible thru the External IP of the specific WorkerNode1/Nodeport
+		
+		
+		
+		Namespace ::::: based Deployment :
+		
+		Taints ==> 
+		Node Selector ==> 
+		
+		
+		Config 
+		Working kubernetes Obj 
+		Service 
+		Networking 
+		Storage 
+		
+		Scheduling 
+			Namespace 		Logical partitioning of Cluster. App. Team-DEV/TEST    -  Eniv. - QA/UAT 		
+				--> deployment -->  --> Blue Green deployment ???
+				
+				Production Environment :::
+				
+					Active Prod Server ---> Appln. is LIVE 			Green Serv  ==> Passive 
+					
+					Passive Prod Server ---> Appln.  			Blue Serv		==> Convert this as Active = Green
+					
+			Namespace0 - Active ==> PROD Load - LIVE 		
+			Namespace1 - Passive => 
+					
+					
+					ingress-Namespace
+				
+			NodeSelector 
+				Taints / Tolerations 
+				
+						Pre-requisites :::
+							Label ==> Assign Lavel to the node 
+						pod : 
+							taint : label1
+							toleration : label1
+				
+				
+				cluster :::					Non-Prod Environment 
+							wn1		-->	 Taint ---> Node Level 					
+							wn2		-->
+							wn3 	-->
+							wn4		-->
+							
+							wn5
+							wn6
+
+
+
+				cluster :::					Prod Environment 
+							wn1		-->	 Taint ---> Node Level 						
+							wn2		-->
+							wn3 	-->
+							wn4		-->
+							
+							wn5
+							wn6
+
+							
+		Montoring 
+		
+		
+
+
+	Application Deployment using Kubernetes ::::
+	
+	1. Have to plan the infra-structure.
+	2. Have to choose the required tools to be install.
+	
+	
+	Deploy Java Maven/Springboot based Application in Kubernetes ???
+	
+	
+	CICD ??
+	
+	What are the various Stages in CICD ???
+	
+	DEV 
+	TEST 
+	UAT
+	PROD 
+	
+	Workflow of CI/CD is :
+	
+		Developers Creates the src_code & Commit the src_code in GITHUB Repository
+	
+	DevOps Tasks Starts :: CICD Pipeline:
+	
+		Identify the scr_code 
+		Perform application Build 
+		Create Artifacts 
+		Build Docker Image
+		Publish the Image to Dockerhub
+		Deploy to Kubernetes 
+			Manifest --> Define Deployments Oject with NodePort Service 
+		
+		
+		Jenkins_Master 			VM 			--> Is to create jenkins cicd pipeline project & Schedule the builds
+							git, jdk, jenkins 
+//sudo apt install git -y
+
+			Jenkins_Slave1 		VM 			--> Actual Build happens - Java Appln. 
+							git, jdk, maven	--> (Create artifacts), docker - build docker image and publish to docker hub(Container Registry)
+							
+		Kubernetes_Master		
+			Kubernetes_WorkerNode1
+			Kubernetes_WorkerNode2
+			Kubernetes_WorkerNode3
+	
+	
+		Jenkins_Master 			VM 			--> Is to create jenkins cicd pipeline project & Schedule the builds	
+			Jenkins_Slave 		VM 			--> Actual Build happens
+		QA_Server 
+		UAT_Server 
+		PROD_Server1,2,3
+		
+		
+	Jenkins CI/CD Pipeline :::
+	
+	SCM-Checkout -> perform Application build(Create artifacts) -> Docker Build(Create Docker Image) -> Publish to dockerhub -> Deploy to K8s.
+	
+	
+	Monitoring
+			
+		
 		
