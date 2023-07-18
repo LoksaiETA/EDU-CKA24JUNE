@@ -1000,8 +1000,219 @@ Day - 7 - 15th July 2023
 	
 	SCM-Checkout -> perform Application build(Create artifacts) -> Docker Build(Create Docker Image) -> Publish to dockerhub -> Deploy to K8s.
 	
+						
+########################
+Day - 8 - 16th July 2023
+########################		
+		
+		
+
+
+	Application Deployment using Kubernetes ::::
 	
-	Monitoring
+	1. Have to plan the infra-structure.
+	2. Have to choose the required tools to be install.
+	
+	
+	Deploy Java Maven/Springboot based Application in Kubernetes ???
+	
+	
+	CICD ??
+	
+	What are the various Stages in CICD ???
+	
+	DEV 
+	TEST 
+	UAT
+	PROD 
+	
+	Workflow of CI/CD is :
+	
+		Developers Creates the src_code & Commit the src_code in GITHUB Repository
+	
+	DevOps Tasks Starts :: CICD Pipeline:
+	
+		Identify the scr_code 
+		Perform application Build 
+		Create Artifacts 
+		Build Docker Image
+		Publish the Image to Dockerhub
+		Deploy to Kubernetes 
+			Manifest --> Define Deployments Oject with NodePort Service 
+		
+		
+		Jenkins_Master 			VM 			--> Is to create jenkins cicd pipeline project & Schedule the builds
+							git, jdk, jenkins 
+				//sudo apt install git -y
+
+			Jenkins_Slave1 		VM 			--> Actual Build happens - Java Appln. 
+							git, jdk, maven	--> (Create artifacts), docker - build docker image and publish to docker hub(Container Registry)
+							Create User & User Access Keys.
+								devopsadmin 
+								sshkeys ==> 
+									private & public 
+									authorized_keys 
+							
+		Kubernetes_Master		
+			Kubernetes_WorkerNode1
+			Kubernetes_WorkerNode2
+			Kubernetes_WorkerNode3
+	
+	
+		Jenkins_Master 			VM 			--> Is to create jenkins cicd pipeline project & Schedule the builds	
+			Jenkins_Slave 		VM 			--> Actual Build happens
+		QA_Server 
+		UAT_Server 
+		PROD_Server1,2,3
+		
+dckr_pat_jYwJ6YtyM0Q830nzWZxcDXK9Ez8
+	
+	Jenkins CI/CD Pipeline :::
+	
+	SCM-Checkout -> perform Application build(Create artifacts) -> Docker Build(Create Docker Image) -> Publish to dockerhub -> Deploy to K8s.
+	
+	Dockerfile --> 
+
+			Deployment ???
 			
+			Copying the artifacts from source server to any target server/Container 
+			
+			./target/loksaieta.war 			==> 			/usr/local/tomcat/webapps
+	
+	
+		Jenkins_Master 			add inbound rule port 8080 
+			Jenkins_Slave 
+
+
+Password 
+Token 
+passwordless auth.
+
+
+	key pair ==> public & private. 
+
+ansible_Controller		ssh --> public of CM 
+
+Ansible_Node1 - Dev 	
+Ansible_Node1 - Test 
+
+
+
+
+
+
+			
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+  https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+  /etc/apt/sources.list.d/jenkins.list > /dev/null
+sudo apt-get update
+sudo apt-get install jenkins
+
+
+pipeline {
+    agent { label 'slave1' }
+	
+    tools {
+        // Install the Maven version configured as "M3" and add it to the path.
+        maven "slave_maven"
+    }
+
+	environment {	
+		DOCKERHUB_CREDENTIALS=credentials('dockerloginid')
+	}
+
+    stages {
+        stage('SCM Checkout') {
+            steps {
+                // Get some code from a GitHub repository
+                git 'https://github.com/LoksaiETA/devops-java-webapp.git'
+                //git 'https://github.com/LoksaiETA/Java-mvn-app2.git'
+            }
+		}
+        stage('Maven Build') {
+            steps {
+                // Run Maven on a Unix agent.
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+            }
+		}
+        stage("Docker build"){
+            steps {
+				sh 'docker version'
+				sh "docker build -t loksaieta/loksai-eta-app:${BUILD_NUMBER} ."
+				sh 'docker image list'
+				sh "docker tag loksaieta/loksai-eta-app:${BUILD_NUMBER} loksaieta/loksai-eta-app:latest"
+            }
+        }
+        stage('Approve - push Image to dockerhub'){
+            steps{
+                
+                //----------------send an approval prompt-------------
+                script {
+                   env.APPROVED_DEPLOY = input message: 'User input required Choose "yes" | "Abort"'
+                       }
+                //-----------------end approval prompt------------
+            }
+        }
+		stage('Login2DockerHub') {
+
+			steps {
+				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+			}
+		}
+		stage('Push2DockerHub') {
+			steps {
+				sh "docker push loksaieta/loksai-eta-app:latest"
+			}
+		}
+        stage('Deploy to Kubernetes Cluster') {
+            steps {
+		script {
+			sshPublisher(publishers: [sshPublisherDesc(configName: 'Kubernetes', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: 'kubectl apply -f k8smvndeployment.yaml', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: '', sourceFiles: '*.yaml')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+			}
+            }
+	    }
+    }
+}
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: loksai-eta-deploy
+  labels:
+    app: loksai-eta-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: loksai-eta-app
+  template:
+    metadata:
+      labels:
+        app: loksai-eta-app
+    spec:
+      containers:
+      - name: loksai-eta-container
+        image: loksaieta/loksai-eta-app
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: loksai-eta-np-service
+  labels:
+    app: loksai-eta-app
+spec:
+  selector:
+    app: loksai-eta-app
+
+  type: NodePort
+  ports:
+  - nodePort: 31000
+    port: 8080
+    targetPort: 8080		
 		
 		
